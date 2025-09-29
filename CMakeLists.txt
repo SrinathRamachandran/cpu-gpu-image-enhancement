@@ -1,54 +1,87 @@
-cmake_minimum_required(VERSION 3.18)
-project(cpu_gpu_image_enhancement LANGUAGES CXX CUDA)
+# cmake_minimum_required(VERSION 2.8)
+# project(convolution2d)
 
-# ---- Standards ----
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CUDA_STANDARD 17)
-set(CMAKE_CUDA_STANDARD_REQUIRED ON)
+# #set(OpenCV_DIR /usr/local/share/OpenCV)
+# find_package(OpenCV REQUIRED)
+# find_package(CUDA REQUIRED)
 
-# ---- Warnings (nice to have) ----
-if(MSVC)
-  add_compile_options(/W4)
-else()
-  add_compile_options(-Wall -Wextra -Wpedantic)
-endif()
+# file(GLOB SOURCES "*.cu")
 
-# ---- OpenCV ----
-# On Windows, pass -DOpenCV_DIR="C:/opencv/build" (folder containing OpenCVConfig.cmake)
-find_package(OpenCV 4 REQUIRED core imgproc imgcodecs highgui)
+# if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGCXX)
+# 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -march=native")
+# endif()
 
-# ---- Output dirs (bin/ under build/) ----
-foreach(OUT RUNTIME LIBRARY ARCHIVE)
-  set(CMAKE_${OUT}_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-endforeach()
+# if(CUDA_FOUND)
+# 	set(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS};-Xcompiler -std=c++11")
+# 	set(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS};-gencode arch=compute_61,code=sm_61")
 
-set(SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
+# 	if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+# 		set(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS};-G;-g;-lineinfo;--ptxas-options=-v")
+# 	else()
+# 		set(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS};-O3;-g;-lineinfo;--ptxas-options=-v")
+# 	endif(CMAKE_BUILD_TYPE STREQUAL "Debug")
 
-# ========== CUDA demo ==========
-add_executable(rgb2gray ${SRC_DIR}/CUDA_rgbtograyscale.cu)
-target_link_libraries(rgb2gray PRIVATE ${OpenCV_LIBS})
-target_include_directories(rgb2gray PRIVATE ${OpenCV_INCLUDE_DIRS})
+# 	if(OpenCV_FOUND)
+# 		CUDA_INCLUDE_DIRECTORIES(${OpenCV_INCLUDE_DIRS})
+# 		include_directories(${OpenCV_INCLUDE_DIRS})
 
-# Optional: pin GPU architectures (e.g., Ampere 86)
-# set_property(TARGET rgb2gray PROPERTY CUDA_ARCHITECTURES 86)
+# 		CUDA_ADD_EXECUTABLE(${PROJECT_NAME} ${SOURCES})
 
-# ========== CPU algorithms (build each as its own exe) ==========
-set(ALGO_TARGETS
-    bhep
-    bhepDD
-    bhepSO
-    bhepUO
-    bhepvid
-)
-foreach(tgt IN LISTS ALGO_TARGETS)
-  add_executable(${tgt} ${SRC_DIR}/${tgt}.cpp)
-  target_link_libraries(${tgt} PRIVATE ${OpenCV_LIBS})
-  target_include_directories(${tgt} PRIVATE ${OpenCV_INCLUDE_DIRS})
-endforeach()
+# 		target_link_libraries(${PROJECT_NAME} ${OpenCV_LIBS})
+# 	endif(OpenCV_FOUND)
+# endif(CUDA_FOUND)
 
-# ---- Install (optional) ----
-install(TARGETS rgb2gray ${ALGO_TARGETS} RUNTIME DESTINATION bin)
+project(cudasamples)
 
-# ---- Helpful status ----
-message(STATUS "OpenCV version: ${OpenCV_VERSION}")
+# compiler options, set c++11 (requires cmake 3.2 or higher)
+cmake_minimum_required(VERSION 3.2)
+set(CMAKE_CXX_STANDARD 11) 
+
+
+# FIND LIBRARIES
+find_package(OpenCV REQUIRED)
+find_package(CUDA REQUIRED)
+
+# INCLUDE HEADERS
+include_directories(${OpenCV_INCLUDE_DIRS})
+# set(agc_ "agc.cu")
+# cuda_add_executable(agc ${agc_})
+# target_link_libraries(agc ${OpenCV_LIBS})
+
+
+# set(histogram_ "histogram.cu")
+# cuda_add_executable(histogram ${histogram_})
+# target_link_libraries(histogram ${OpenCV_LIBS})
+
+# set(bhep_ "bhep.cu")
+# cuda_add_executable(bhep ${bhep_})
+# target_link_libraries(bhep ${OpenCV_LIBS})
+
+set(agc_vid_ "agc_video.cu")
+cuda_add_executable(agc_vid ${agc_vid_})
+target_link_libraries(agc_vid ${OpenCV_LIBS})
+
+set(bhep_vid_ "bhep_video.cu")
+cuda_add_executable(bhep_vid ${bhep_vid_})
+target_link_libraries(bhep_vid ${OpenCV_LIBS})
+
+# set(qhep_ "qhep.cu")
+# cuda_add_executable(qhep ${qhep_})
+# target_link_libraries(qhep ${OpenCV_LIBS})
+
+set(qhep_vid_ "qhep_vid.cu")
+cuda_add_executable(qhep_vid ${qhep_vid_})
+target_link_libraries(qhep_vid ${OpenCV_LIBS})
+
+# set(aieli_ "aieli.cu")
+# cuda_add_executable(aieli ${aieli_})
+# target_link_libraries(aieli ${OpenCV_LIBS})
+
+set(aieli_vid_ "aieli_vid.cu")
+cuda_add_executable(aieli_vid ${aieli_vid_})
+target_link_libraries(aieli_vid ${OpenCV_LIBS})
+
+set(clahedgc_ "clahedgc.cu")
+cuda_add_executable(clahedgc ${clahedgc_})
+target_link_libraries(clahedgc ${OpenCV_LIBS})
+
