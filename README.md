@@ -14,6 +14,11 @@ It includes a minimal CUDA kernel demo for RGB → Grayscale conversion and seve
   - BHEP-SO (Optimized)
   - BHEP-UO (unoptimized)
   - BHEP-Video (video processing pipeline)
+## ⚡ Performance Notes
+
+The CPU implementations make use of multi-threading to parallelize pixel-level operations across cores, significantly reducing processing time for large images and video frames.
+
+This mirrors the same design principles seen in distributed systems — splitting workloads into independent tasks, executing them in parallel, and then aggregating results. The GPU (CUDA) kernels further extend this parallelism to thousands of threads.
 
 ## Publication
 This repository is based on my undergraduate research published at IEEE RTEICT 2021:
