@@ -24,3 +24,8 @@ This mirrors the same design principles seen in distributed systems — splittin
 This repository is based on my undergraduate research published at IEEE RTEICT 2021:
 
 S. S. Harakannanavar, G. K. S, S. Ramachandran, T. G. S and R. A. C, "Performance analysis of CPU & GPU for Real Time Image/Video," 2021 International Conference on Recent Trends on Electronics, Information, Communication & Technology (RTEICT), Bangalore, India, 2021, pp. 439–443. doi: 10.1109/RTEICT52294.2021.9573554
+
+
+##Explanation and methodology
+
+Details regarding methods and results explained in presentation attached - https://docs.google.com/presentation/d/1TIQFLhurJGOeGf2UzuUquMgaLjN8FZh-/edit?usp=sharing&ouid=111855158327885367913&rtpof=true&sd=true
